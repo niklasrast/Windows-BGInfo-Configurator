@@ -1,5 +1,11 @@
 # BGInfo Configurator from Sysinternals
 
+![GitHub repo size](https://img.shields.io/github/repo-size/niklasrast/Windows-10-BGInfo-Configurator)
+
+![GitHub issues](https://img.shields.io/github/issues-raw/niklasrast/Windows-10-BGInfo-Configurator)
+
+![GitHub last commit](https://img.shields.io/github/last-commit/niklasrast/Windows-10-BGInfo-Configurator)
+
 This repo contains an powershell scripts to deploy an BGInfo configuration $PSSCRIPTROOT\BGInfo\CurrentConfig.bgi to any Windows Client. The configuration will be refreshed on every login from the users.
 
 ## Install:
