@@ -3,8 +3,8 @@
     Windows 10 
 
     .DESCRIPTION
-    Install:   PowerShell.exe -ExecutionPolicy Bypass -Command .\W10_InstallBGInfo.ps1 -install
-    Uninstall:   PowerShell.exe -ExecutionPolicy Bypass -Command .\W10_InstallBGInfo.ps1 -uninstall
+    Install:   PowerShell.exe -ExecutionPolicy Bypass -Command .\INSTALL-Sysinternals-BGINFO.ps1 -install
+    Uninstall:   PowerShell.exe -ExecutionPolicy Bypass -Command .\INSTALL-Sysinternals-BGINFO.ps1 -uninstall
 
     .ENVIRONMENT
     PowerShell 5.0
@@ -21,9 +21,14 @@ param(
 	[switch]$uninstall
 )
 
-$ErrorActionPreference="SilentlyContinue"
+$ErrorActionPreference = "SilentlyContinue"
 #Use "C:\Windows\Logs" for System Installs and "$env:TEMP" for User Installs
 $logFile = ('{0}\{1}.log' -f "C:\Windows\Logs", [System.IO.Path]::GetFileNameWithoutExtension($MyInvocation.MyCommand.Name))
+
+#Test if registry folder exists
+if ($true -ne (test-Path -Path "HKLM:\SOFTWARE\OS")) {
+    New-Item -Path "HKLM:\SOFTWARE\" -Name "OS" -Force
+}
 
 if ($install)
 {
@@ -37,10 +42,9 @@ if ($install)
             #Register BGInfo in autostart
             New-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" -Name "BGInfo" -PropertyType "String" -Value "C:\Program Files (x86)\BGInfo\Bginfo.exe CurrentConfig.bgi /timer:0 /nolicprompt /silent" -Force
             
-            New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall" -Name "W10_InstallBGInfo" -Force
-            New-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\W10_InstallBGInfo" -Name "Version" -PropertyType "String" -Value "1.0" -Force
-            New-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\W10_InstallBGInfo" -Name "Revision" -PropertyType "String" -Value "001" -Force
-            New-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\W10_InstallBGInfo" -Name "LogFile" -PropertyType "String" -Value "${logFile}" -Force
+            #Register package in registry
+            New-Item -Path "HKLM:\SOFTWARE\OS\" -Name "Sysinternals-BGINFO"
+            New-ItemProperty -Path "HKLM:\SOFTWARE\OS\Sysinternals-BGINFO" -Name "Version" -PropertyType "String" -Value "1.0.0" -Force
         } 
         catch
         {
@@ -61,7 +65,8 @@ if ($uninstall)
             #Deregister BGInfo in autostart
             Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" -Name "BGInfo" -Force
             
-            Remove-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\W10_InstallBGInfo" -Force -Recurse
+            #Remove package registration in registry
+            Remove-Item -Path "HKLM:\SOFTWARE\OS\Sysinternals-BGINFO" -Recurse -Force 
         }
         catch
         {
