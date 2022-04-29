@@ -10,12 +10,12 @@ This repo contains an powershell scripts to deploy an BGInfo configuration $PSSC
 
 ## Install:
 ```powershell
-PowerShell.exe -ExecutionPolicy Bypass -Command .\W10_InstallBGInfo.ps1 -install
+C:\Windows\SysNative\WindowsPowershell\v1.0\PowerShell.exe -ExecutionPolicy Bypass -Command .\W10_InstallBGInfo.ps1 -install
 ```
 
 ## Uninstall:
 ```powershell
-PowerShell.exe -ExecutionPolicy Bypass -Command .\W10_InstallBGInfo.ps1 -uninstall
+C:\Windows\SysNative\WindowsPowershell\v1.0\PowerShell.exe -ExecutionPolicy Bypass -Command .\W10_InstallBGInfo.ps1 -uninstall
 ```
 
 ### Parameter definitions:
