@@ -26,8 +26,8 @@ $ErrorActionPreference = "SilentlyContinue"
 $logFile = ('{0}\{1}.log' -f "C:\Windows\Logs", [System.IO.Path]::GetFileNameWithoutExtension($MyInvocation.MyCommand.Name))
 
 #Test if registry folder exists
-if ($true -ne (test-Path -Path "HKLM:\SOFTWARE\OS")) {
-    New-Item -Path "HKLM:\SOFTWARE\" -Name "OS" -Force
+if ($true -ne (test-Path -Path "HKLM:\SOFTWARE\COMPANY")) {
+    New-Item -Path "HKLM:\SOFTWARE\" -Name "COMPANY" -Force
 }
 
 if ($install)
@@ -41,8 +41,8 @@ if ($install)
             Copy-Item -Path "C:\ProgramData\BGInfo\bginfo.bat" -Destination "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup" -Force
 
             #Register package in registry
-            New-Item -Path "HKLM:\SOFTWARE\OS\" -Name "Sysinternals-BGInfo"
-            New-ItemProperty -Path "HKLM:\SOFTWARE\OS\Sysinternals-BGInfo" -Name "Version" -PropertyType "String" -Value "1.0.0" -Force
+            New-Item -Path "HKLM:\SOFTWARE\COMPANY\" -Name "Sysinternals-BGInfo"
+            New-ItemProperty -Path "HKLM:\SOFTWARE\COMPANY\Sysinternals-BGInfo" -Name "Version" -PropertyType "String" -Value "1.0.0" -Force
 
             return $true        
         } 
@@ -64,7 +64,7 @@ if ($uninstall)
             Remove-Item -Path "C:\ProgramData\BGInfo\" -Recurse -Force
 
             #Remove package registration in registry
-            Remove-Item -Path "HKLM:\SOFTWARE\OS\Sysinternals-BGInfo" -Recurse -Force 
+            Remove-Item -Path "HKLM:\SOFTWARE\COMPANY\Sysinternals-BGInfo" -Recurse -Force 
 
             return $true     
         }
